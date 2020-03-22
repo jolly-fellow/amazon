@@ -6,48 +6,77 @@ using namespace std;
 
 // question source:
 // https://leetcode.com/discuss/interview-question/411357/
-int minHours(int rows, int columns, vector<vector<int>> &grid) {
-    if (grid.empty()) return 0;
-    queue<pair<int, int>> q;
-    int dirs[4][2] = {{1,  0}, {-1, 0}, {0,  1}, {0,  -1}};
 
+
+struct node_t { int row = 0, col = 0; };
+
+int min_hours(vector<vector<int>> &matrix) {
+    int hours = -1; // return -1 in case of error
+
+    int directions[4][2] = {{1,  0}, {-1, 0}, {0,  1}, {0,  -1}};
+
+    size_t rows = matrix.size();
+    size_t cols = rows ? matrix[0].size() : 0; // to prevent access error when rows == 0
+
+    // collect all positions of the zombies into a queue
+    queue<node_t> q;
     for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns; j++) {
-            if (grid[i][j] == 1) q.push({i, j});
+        for (int j = 0; j < cols; j++) {
+            if (matrix[i][j] == 1) { q.push({i, j}); }
         }
     }
-
-    int hours = -1;
-
+    // Do BFS until the end of the humans
     while (!q.empty()) {
         int q_size = q.size();
+        // Process all positions which are already added into the queue.
         for (int i = 0; i < q_size; i++) {
-            auto cur = q.front();
+            auto node = q.front();
             q.pop();
-            for (auto dir: dirs) {
-                int nr = cur.first + dir[0];
-                int nc = cur.second + dir[1];
-                if (nr >= 0 && nr < rows && nc >= 0 && nc < columns && grid[nr][nc] == 0) {
+            // Find all humans in adjacent cells and add them into the queue
+            for (auto dir: directions) {
+                int nr = node.row + dir[0];
+                int nc = node.col + dir[1];
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && matrix[nr][nc] == 0) {
                     q.push({nr, nc});
-                    grid[nr][nc] = 1;
+                    matrix[nr][nc] = 1;
                 }
             }
         }
         hours++;
     }
-
     return hours;
 }
 
+
 int main() {
-    vector<vector<int>> grid = {
+
+    vector<vector<int>> empty = {};
+    vector<vector<int>> one = {{0,0}};
+    vector<vector<int>> two = {{0,0},{0,1}};
+
+    vector<vector<int>> m0 = {
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+    };
+
+    vector<vector<int>> m1 = {
+            {0, 0, 0, 0, 1},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+    };
+
+    vector<vector<int>> m = {
             {0, 1, 1, 0, 1},
             {0, 1, 0, 1, 0},
             {0, 0, 0, 0, 1},
             {0, 1, 0, 0, 0},
     };
-    int row = grid.size(), col = grid[0].size();
-    cout << minHours(row, col, grid) << endl;
+
+
+    cout << min_hours(m) << endl;
 
     return 0;
 }
