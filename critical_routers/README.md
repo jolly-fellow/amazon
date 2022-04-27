@@ -26,7 +26,10 @@ Source code for the video: https://github.com/williamfiset/Algorithms/tree/maste
 
 Related problems:
 
-    https://leetcode.com/discuss/interview-question/372581
-    https://leetcode.com/problems/critical-connections-in-a-network/    
-    https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
-    https://cp-algorithms.com/graph/cutpoints.html
+https://leetcode.com/discuss/interview-question/372581
+
+https://leetcode.com/problems/critical-connections-in-a-network/
+    
+https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/
+
+https://cp-algorithms.com/graph/cutpoints.html
